@@ -25,9 +25,10 @@ class SinusoidalPositionEmbeddings(nn.Module):
 
         Return shape = (B, dim)
         """
+        device = time.device
         half_dim = self.dim // 2
         embeddings = math.log(10000) / (half_dim - 1)
-        embeddings = torch.exp(torch.arange(half_dim) * -embeddings)
+        embeddings = torch.exp(torch.arange(half_dim, device=device) * -embeddings)
         embeddings = time[:, None] * embeddings[None, :]
         embeddings = torch.cat((embeddings.sin(), embeddings.cos()), dim=-1)
         return embeddings
@@ -80,7 +81,7 @@ class Block(nn.Module):
         o = self.bnorm2(self.relu(self.conv2(o)))
 
         return self.final(o)
-    
+
 class UNet(nn.Module):
     """Construct a UNet model.
     """
@@ -105,7 +106,7 @@ class UNet(nn.Module):
         # outputs an image with shape (B, out_channels, H_out, W_out).
         # The first 3 args to this are (in_channels, out_channels, kernel_size)
         # More info at: https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html
-        self.conv1 = nn.Conv2d(img_channels, sequence_channels[0], 2, padding=1)
+        self.conv1 = nn.Conv2d(img_channels, sequence_channels[0], 3, padding=1)
         self.conv2 = nn.Conv2d(sequence_channels[0], img_channels, 1)
 
     
@@ -127,8 +128,7 @@ class UNet(nn.Module):
             residuals.append(o)
 
         for us, res in zip(self.upsampling, reversed(residuals)):
-            cat = torch.cat((o, res), dim=1)
-            o = us(cat, t, **kwargs)
+            o = us(torch.cat((o, res), dim=1), t, **kwargs)
             
         return self.conv2(o)
 
@@ -161,7 +161,7 @@ class DiffusionModel(torch.nn.Module):
     self.alphas = 1 - self.betas
     self.alphas_cumprod = torch.cumprod(self.alphas, axis=0)
 
-  def destroy(self, x_0, t):
+  def destroy(self, x_0, t, device):
     """Returns the noisy image at step t + the sampled noise.
 
     x_0: tensor with shape (B, C, H, W)
@@ -180,11 +180,12 @@ class DiffusionModel(torch.nn.Module):
     noise = torch.randn_like(x_0)
 
     # Shape = (batch_size, 1, 1, 1)
+    self.alphas_cumprod = self.alphas_cumprod.to(device)
     a_bar_t = torch.gather(self.alphas_cumprod, 0, t).reshape(batch_size, 1, 1, 1)
 
     # Shape = (batch_size, num_channels, height, width)
     mean = torch.sqrt(a_bar_t) * x_0
-    std_dev = torch.sqrt(1 - a_bar_t) * noise
+    std_dev = torch.sqrt(1 - a_bar_t)
 
     return mean + std_dev * noise, noise
 
