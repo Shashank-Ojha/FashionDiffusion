@@ -12,6 +12,9 @@ Just type `jupyter notebook` into your terminal and open the link it gives you.
 After that open the file `trainer.ipynb` and run the blocks. 
 
 ## Results
+You can see the image noising process below:
+![Alt text](./imgs/noise.png)
+
 After training the model for 100 epochs on T4 GPUs through Google Colab,
 we get the train loss of:
 
