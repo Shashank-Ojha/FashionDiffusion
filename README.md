@@ -21,9 +21,9 @@ Epoch 35: train loss 0.0465
 
 If we generate from the model at this point, we get:
 
-![alt text](https://github.com/Shashank-Ojha/FashionDiffusion/tree/main/imgs/results1.png)
-![alt text](https://github.com/Shashank-Ojha/FashionDiffusion/tree/main/imgs/results2.png)
-![alt text](https://github.com/Shashank-Ojha/FashionDiffusion/tree/main/imgs/results2.png)
+![alt text](https://github.com/Shashank-Ojha/FashionDiffusion/tree/main/imgs/results1.png?raw=true)
+![alt text](https://github.com/Shashank-Ojha/FashionDiffusion/tree/main/imgs/results2.png?raw=true)
+![alt text](https://github.com/Shashank-Ojha/FashionDiffusion/tree/main/imgs/results2.png?raw=true)
 
 
 The model is starting to learn some classes, but others are still poor.
