@@ -13,6 +13,7 @@ After that open the file `trainer.ipynb` and run the blocks.
 
 ## Results
 You can see the image noising process below:
+
 ![Alt text](./imgs/noise.png)
 
 After training the model for 100 epochs on T4 GPUs through Google Colab,
@@ -42,4 +43,5 @@ https://www.youtube.com/watch?v=S_il77Ttrmg&ab_channel=dtransposed
 Also I'd like to cite:
 
 Denoising Diffusion Probabilistic Models : https://arxiv.org/abs/2006.11239
+
 Understanding Diffusion Models: A Unified Perspective: https://arxiv.org/abs/2208.11970
