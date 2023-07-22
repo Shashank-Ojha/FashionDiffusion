@@ -23,7 +23,7 @@ If we generate from the model at this point, we get:
 
 ![Alt text](./imgs/results1.png)
 ![Alt text](./imgs/results2.png)
-![Alt text](./imgs/results3.pngs)
+![Alt text](./imgs/results3.png)
 
 
 The model is starting to learn some classes, but others are still poor.
